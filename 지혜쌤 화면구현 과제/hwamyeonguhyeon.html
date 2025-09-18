@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>타이머</title>
+  <style>
+    .all{
+        border: 3px solid #2C5AA0;
+        height:790px;
+        width:1430px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0px;
+        gap: 10px; 
+        background-color: #F4F7FA;
+    }
+    .back_div{
+        background-color:#D9E6F2;
+        height:50px;
+        width: 400px;
+        border-radius: 10px;
+        margin: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0px;
+        gap: 10px;    
+    }
+    .button{
+        color:#FFFFFF;
+        background-color:#4A90E2;
+        border-color:#2C5AA0;
+        border-radius: 10px;
+        width: 60px;
+        height: 30px;
+        font-size: 13px;
+        font-weight: bold;
+    }
+    .button:hover {
+    background-color: #357ABD;
+    color: #E1EFFF;
+}
+.title{
+    font-size: 50px;
+    font-weight: bold;
+    margin: 0px;
+    color: #2C5AA0;
+}
+  </style>
+</head>
+<body>
+    <div class="all">
+        <div>
+            <h1 class="title">타이머 ⏱</h1>
+        </div>
+    <div class="back_div">
+    <button class="button" onclick = "pl_1s()">+ 1초</button>
+    <button class="button" onclick = "pl_10s()">+ 10초</button>
+    <button class="button" onclick = "pl_1m()">+ 1분</button>
+    <button class="button" onclick = "pl_10m()">+ 10분</button>
+    <button class="button" onclick = "pl_1h()">+ 1시간</button>
+    </div>
+    <div class="back_div">
+    <button class="button" onclick = "start()">시작</button>
+    <button class="button" onclick = "stop()">중지</button>
+    <button class="button" onclick="clearTimer()">초기화</button>
+    </div>
+    
+  <h1 id="timer">남은 시간 0시간 0분 0.00초</h1>
+  <p id="message"></p>
+  <audio id="alarm" src="monkey sound.mp3"></audio>
+</div>
+
+  <script>
+    let time_s = 0;
+    let time_m = 0;
+    let time_h = 0;
+    let countdown = null;
+    let warning = null;
+    const timerElement = document.getElementById("timer");
+    const messageElement = document.getElementById("message");
+    
+    function clearTimer() {
+    stop();
+    time_s = 0;
+    time_m = 0;
+    time_h = 0;
+    timerElement.textContent = '남은 시간: 0시간 0분 0.00초';
+    messageElement.textContent = '';
+    const audio = document.getElementById("alarm");
+    audio.pause();
+    audio.currentTime = 0; 
+    const element = document.getElementById("timer");
+    clearInterval(warning);
+    warning = null;
+    element.style.color = "black";
+
+  }
+    function pl_1s(){
+        time_s += 1;
+        if (time_s >= 60)
+    {
+        time_s -= 60;
+        time_m += 1;
+    }
+        let display_s=time_s.toFixed(2);
+      let display_m=time_m.toFixed(0);
+      let display_h=time_h.toFixed(0);
+        timerElement.textContent = `남은 시간: ${display_h}시간 ${display_m}분 ${display_s}초`;
+    }
+    function pl_10s(){
+        time_s += 10;
+        if (time_s >= 60)
+    {
+        time_s -= 60;
+        time_m += 1;
+    }
+        let d
+        let display_s=time_s.toFixed(2);
+      let display_m=time_m.toFixed(0);
+      let display_h=time_h.toFixed(0);
+        timerElement.textContent = `남은 시간: ${display_h}시간 ${display_m}분 ${display_s}초`;
+    }
+    function pl_1m(){
+        time_m += 1;
+        if (time_m >= 60)
+    {
+        time_m -= 60;
+        time_h += 1;
+    }
+        let d
+        let display_s=time_s.toFixed(2);
+      let display_m=time_m.toFixed(0);
+      let display_h=time_h.toFixed(0);
+        timerElement.textContent = `남은 시간: ${display_h}시간 ${display_m}분 ${display_s}초`;
+    }
+    function pl_10m(){
+        time_m += 10;
+        if (time_m >= 60)
+    {
+        time_m -= 60;
+        time_h += 1;
+    }
+        let display_s=time_s.toFixed(2);
+      let display_m=time_m.toFixed(0);
+      let display_h=time_h.toFixed(0);
+        timerElement.textContent = `남은 시간: ${display_h}시간 ${display_m}분 ${display_s}초`;
+    }
+    function pl_1h(){
+        time_h += 1;
+        let display_s=time_s.toFixed(2);
+      let display_m=time_m.toFixed(0);
+      let display_h=time_h.toFixed(0);
+        timerElement.textContent = `남은 시간: ${display_h}시간 ${display_m}분 ${display_s}초`;
+    }
+
+    function start() {
+  if (countdown !== null) return;
+
+  countdown = setInterval(() => {
+   
+    if (time_h <= 0 && time_m <= 0 && time_s <= 0.01) {
+      clearInterval(countdown);
+      countdown = null;
+
+      clearInterval(warning);
+      warning = null;
+
+      timerElement.style.color = "black";
+      timerElement.textContent = `남은 시간: 0시간 0분 0.00초`;
+      messageElement.textContent = "⏰ TIME OVER!!";
+
+      document.getElementById("alarm").play();
+      return;
+    }
+
+    time_s -= 0.01;
+
+    if (time_m <= 0 && time_h >= 1) {
+      time_m = 60;
+      time_h -= 1;
+    }
+    if (time_s <= 0 && time_m >= 1) {
+      time_s = 60;
+      time_m -= 1;
+    }
+
+    let display_s = time_s.toFixed(2);
+    let display_m = time_m.toFixed(0);
+    let display_h = time_h.toFixed(0);
+    timerElement.textContent = `남은 시간: ${display_h}시간 ${display_m}분 ${display_s}초`;
+
+    if (parseFloat(display_s) <= 10.00 && time_m <= 0 && time_h <= 0 && warning === null) {
+      const element = document.getElementById("timer");
+      let isRed = false;
+      warning = setInterval(() => {
+        element.style.color = isRed ? "red" : "blue";
+        isRed = !isRed;
+      }, 300);
+    }
+  }, 1);
+}
+
+function stop(){
+    clearInterval(countdown);
+  countdown = null;
+  clearInterval(warning);
+  warning = null;
+  timerElement.style.color = "black";
+}
+  </script>
+</body>
+</html>

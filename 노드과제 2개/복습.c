@@ -149,4 +149,4 @@ Node* middle(Node* head)//pre는 앞에것을 뜻함삽입 자리
 
     printf("\n");
     return head;
-}git 
+}

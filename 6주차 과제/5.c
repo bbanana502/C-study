@@ -6,15 +6,17 @@ typedef struct Node {
     struct Node* next;
 } Node;
 
+Node* head = NULL;
+Node* temp = NULL;
+Node* newNode = NULL;
+int num;
+int count = 0;
+
 int main(void)
 {
-    Node* head = NULL;
-    Node* temp = NULL;
-    Node* newNode = NULL;
-    int num;
+    
     printf("몇개의 노드를 입력하시겠습니까? : ");
     scanf("%d",&num);
-    int n;
     
     for (int i=0; i<num; i++)
     {
@@ -38,6 +40,19 @@ int main(void)
         }
 
         temp = newNode;
+    }
+    int* array = (int*)malloc(sizeof(int) * num);
+
+    for (int i=0; i<num; i++)
+    {
+        array[i] = head->data;
+        head = head->next;
+        count++;
+    }
+    printf("결과 출력 : ");
+    for (int i=num-1; i>=0; i--)
+    {
+        printf("%d ",array[i]);
     }
 }
 //노드의 개수를 입력받고 연결리스트 생성, 

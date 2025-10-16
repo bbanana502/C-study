@@ -2,7 +2,7 @@
 #include<stdlib.h>
 
 typedef struct Node {
-    char data;
+    char data[100];
     struct Node* next;
 } Node;
 
@@ -27,7 +27,7 @@ int main(void)
 
 
         printf("값을 넣어주세요 : ");
-        scanf(" %c",&newNode->data);
+        scanf(" %s",newNode->data);
         if (head==NULL)
         {
             head = newNode;
@@ -44,7 +44,7 @@ int main(void)
 
     for (int i=0; i<num; i++)
     {
-        printf("%c",p->data);
+        printf("%s",p->data);
         p = p->next;
     }
 }

@@ -33,8 +33,6 @@ int main(void)
         if (rightIndex < num)
             nodes[i]->right = nodes[rightIndex];
     }
-
-    Node* root = nodes[0];
     //결과 출력
     printf("\n노드 배열 순서 출력: ");
     for (int i = 0; i < num; i++) {
